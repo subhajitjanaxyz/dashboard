@@ -21,13 +21,31 @@ export const api=createApi ({
         // create post
         Createnjpost:builder.mutation({
             query:(dataonj)=>({
-                url:"api/get",
+                url:"api/post",
                 method:"POST",
                 body:dataonj
             })
         }),
+        Deletpost:builder.mutation({
+            query:(params)=>(
+                {
+                    url:`api/del/${params}`,
+                    method:"DELETE"
+                }    
+            )
+        }),
+        //update data
+        Updatepost:builder.mutation({
+            query:({id,body})=>({ 
+                
+                url:`api/u/${id}`,
+                method:"PUT",
+                body
+
+            })
+        })
 
     })
 })
 
-export const {useGetnjspostQuery,useGetallpostdataQuery,useCreatenjpostMutation}=api
+export const {useLazyGetnjspostQuery,useGetallpostdataQuery,useCreatenjpostMutation,useDeletpostMutation,useUpdatepostMutation}=api

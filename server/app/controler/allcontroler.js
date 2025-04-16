@@ -5,7 +5,7 @@ export const getcontroller= async(req,res)=>{
  
     console.log(`${process.env.DBURL}`);
     const dataall= await dataMODEL.find();
-    console.log('get req');
+   
     
     res.send(dataall)
      
@@ -28,13 +28,13 @@ export const getcontroller= async(req,res)=>{
  }       
 
  export const updatecontroller= async(req,res)=>{
-    const id=req.params.id;
+    const id=req.params.id; 
+  
     const {name,email}=req.body;
-    const objecta={
-        name,
-        email
-    }
-    await dataMODEL.updateOne({_id:id},objecta)
+    console.log({name,email})
+    
+    await dataMODEL.updateOne({_id:id},{name,email})
+  
     res.send("update done")
  }
 

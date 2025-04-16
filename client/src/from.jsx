@@ -1,20 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useCreatenjpostMutation } from "./store/apirtk";
+import { useCreatenjpostMutation, useGetallpostdataQuery, useUpdatepostMutation } from "./store/apirtk";
 
 
-export const From = () => {
-  const [fromdata, setfromdata] = useState({
+export const From = ({fromdata, setfromdata}) => {
+  // console.log(fromdata  )
+  //post api
+ 
+  const [createpost]=useCreatenjpostMutation();
+  const [updatepost]=useUpdatepostMutation();
+  const{refetch} =useGetallpostdataQuery();
+ 
+
+  const handlesubmit = async(e) => {
+    e.preventDefault();
+
+if(fromdata._id){
+const newobj={
+  id:fromdata._id,
+  body:fromdata
+} 
+
+ await updatepost(newobj)
+}else{
+  await createpost(fromdata)
+}
+await refetch()
+   setfromdata({
     name: "",
     email: ""
   })
-  const dispatch=useDispatch();
-  const handlesubmit = (e) => {
-    e.preventDefault();
-    dispatch(useCreatenjpostMutation(fromdata))
-    alert("submited");
-
-  }
+    
+    }
   const handleonchaneinpurfrom = (e) => {
     const valuex = e.target.value;
     const namex = e.target.name;
@@ -22,7 +39,9 @@ export const From = () => {
 
     setfromdata((prev) => ({ ...prev, [namex]: valuex }))
   }
-//useCreatenjpostMutation
+
+
+
 
 
 
@@ -64,7 +83,7 @@ export const From = () => {
             <div className="text-center">
               <button className="btn btn-info mt-3 mx-auto text-white fw-bolder" type="submit"
                 onClick={handlesubmit}
-              >submit</button>
+              >{fromdata._id? "update":"submit"}</button>
             </div>
           </div>
         </div>
